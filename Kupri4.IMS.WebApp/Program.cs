@@ -1,3 +1,4 @@
+using Kupri4.IMS.Plugins.EFCore;
 using Kupri4.IMS.WebApp.Areas.Identity;
 using Kupri4.IMS.WebApp.Data;
 using Microsoft.AspNetCore.Components;
@@ -21,7 +22,28 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddSingleton<WeatherForecastService>();
 
+builder.Services.AddDbContext<IMSDbContext>(options =>
+{
+    options.UseInMemoryDatabase("Kupri4.IMS");
+});
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var imsDbContext = scope.ServiceProvider.GetRequiredService<IMSDbContext>();
+
+        imsDbContext.Database.EnsureDeleted();
+        imsDbContext.Database.EnsureCreated();
+
+    }
+    catch (Exception)
+    {
+        throw;
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
