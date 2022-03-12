@@ -10,16 +10,19 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+<ViewInventoriesComponent OnSearchInventoriesCallback = "OnSearchInventories"/>
+
 @code {
-    protected override async Task OnInitializedAsync()
-    {
-        var inventories = await ViewInventoriesByNameUseCase.ExecuteAsync("");
-    }
 
     private int currentCount = 0;
 
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    private void OnSearchInventories(List<Inventory> inventories)
+    {
+        
     }
 }

@@ -1,0 +1,32 @@
+﻿@using Kupri4.IMS.CoreBusiness
+@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+
+<div class="input-group mb-3">
+
+    <input aria-label="Type inventory name here to search"
+           class="form-control"
+           type="text"
+           placeholder="Type inventory name here to search"
+           @bind-value="InventoryNameToSearch">
+
+    <button class="btn btn-outline-success"
+            type="button"
+            @onclick="@(async () => await ViewInventories())">
+        View
+    </button>
+
+</div>
+
+@code {
+    private string? InventoryNameToSearch;
+
+    [Parameter]
+    public EventCallback<List<Inventory>> OnSearchInventoriesCallback { get; set; }
+
+    private async Task ViewInventories()
+    {
+        List<Inventory> inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(InventoryNameToSearch ?? string.Empty)).ToList();
+
+        await OnSearchInventoriesCallback.InvokeAsync(inventories);
+    }
+}
