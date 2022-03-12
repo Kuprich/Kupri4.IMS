@@ -1,0 +1,43 @@
+﻿@page "/inventories"
+
+<h3>Inventory List</h3>
+<br />
+<ViewInventoriesComponent OnSearchInventoriesCallback="OnSearchInventories"/>
+
+@if(_inventories != null && _inventories.Count != 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var inventory in _inventories)
+            {
+                <tr>
+                    <td>@inventory.Name</td>
+                    <td>@inventory.Quantity</td>
+                    <td>@inventory.Price.ToString("C2")</td>
+                    <td>
+                        <a class="btn btn-outline-success">Edit</a>
+                        <a class="btn btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Inventory>? _inventories;
+
+    private void OnSearchInventories(List<Inventory> inventories)
+    {
+        _inventories = inventories ?? new List<Inventory>();
+    }
+
+}
