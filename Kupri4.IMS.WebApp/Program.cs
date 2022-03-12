@@ -1,11 +1,11 @@
 using Kupri4.IMS.Plugins.EFCore;
+using Kupri4.IMS.UseCases;
+using Kupri4.IMS.UseCases.Interfaces;
+using Kupri4.IMS.UseCases.PluginInterfaces;
 using Kupri4.IMS.WebApp.Areas.Identity;
 using Kupri4.IMS.WebApp.Data;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +26,12 @@ builder.Services.AddDbContext<IMSDbContext>(options =>
 {
     options.UseInMemoryDatabase("Kupri4.IMS");
 });
+
+// DI Repositories
+builder.Services.AddTransient<IInventoryRepository, InventoryRepository>();
+
+// DI Use cases
+builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
 
 var app = builder.Build();
 

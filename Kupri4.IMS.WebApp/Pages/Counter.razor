@@ -1,5 +1,7 @@
 ﻿@page "/counter"
 
+@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
@@ -9,6 +11,11 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
+    protected override async Task OnInitializedAsync()
+    {
+        var inventories = await ViewInventoriesByNameUseCase.ExecuteAsync("");
+    }
+
     private int currentCount = 0;
 
     private void IncrementCount()
