@@ -11,7 +11,7 @@
 
     <button class="btn btn-outline-success"
             type="button"
-            @onclick="@(async () => await ViewInventories())">
+            @onclick="@(async () => await ViewInventoriesAsync())">
         View
     </button>
 
@@ -20,10 +20,15 @@
 @code {
     private string? InventoryNameToSearch;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewInventoriesAsync();
+    }
+
     [Parameter]
     public EventCallback<List<Inventory>> OnSearchInventoriesCallback { get; set; }
 
-    private async Task ViewInventories()
+    private async Task ViewInventoriesAsync()
     {
         List<Inventory> inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(InventoryNameToSearch ?? string.Empty)).ToList();
 

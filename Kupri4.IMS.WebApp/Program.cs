@@ -32,6 +32,7 @@ builder.Services.AddTransient<IInventoryRepository, InventoryRepository>();
 
 // DI Use cases
 builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
+builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
 
 var app = builder.Build();
 

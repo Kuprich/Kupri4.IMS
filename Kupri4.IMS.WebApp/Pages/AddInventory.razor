@@ -1,0 +1,45 @@
+﻿@page "/addinventory"
+
+@inject IAddInventoryUseCase AddInventoryUseCase
+@inject NavigationManager NavigationManager
+
+
+<h3>Add inventory</h3>
+
+<EditForm Model="_inventory" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label class="form-label" for="name">Inventory name</label>
+        <InputText class="form-control" id="name" @bind-Value="_inventory.Name" />
+    </div>
+
+    <div class="form-group">
+        <label class="form-label" for="quantity">Quantity</label>
+        <InputNumber class="form-control" id="quantity" @bind-Value="_inventory.Quantity" />
+    </div>
+
+    <div class="form-group">
+        <label class="form-label" for="price">Quantity</label>
+        <InputNumber class="form-control" id="price" @bind-Value="_inventory.Price" />
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-outline-primary">Submit</button>
+
+</EditForm>
+
+
+
+@code {
+    private Inventory _inventory = new();
+
+    private async Task HandleValidSubmit()
+    {
+        await AddInventoryUseCase.ExecuteAsync(_inventory);
+        NavigationManager.NavigateTo("/inventories");
+    }
+
+}
