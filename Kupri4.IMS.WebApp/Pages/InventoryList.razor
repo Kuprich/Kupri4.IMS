@@ -28,7 +28,7 @@
                     <td>@inventory.Quantity</td>
                     <td>@inventory.Price.ToString("C2")</td>
                     <td>
-                        <a class="btn btn-outline-success">Edit</a>
+                        <a class="btn btn-outline-success" @onclick="() => NavigateToEditInventory(inventory.Id)">Edit</a>
                         <a class="btn btn-outline-danger">Delete</a>
                     </td>
                 </tr>
@@ -48,5 +48,10 @@
     {
         NavigationManager.NavigateTo("/addinventory");
     }
+    private void NavigateToEditInventory(Guid inventoryId)
+    {
+        NavigationManager.NavigateTo($"/edetinventory/{inventoryId}");
+    }
+
 
 }

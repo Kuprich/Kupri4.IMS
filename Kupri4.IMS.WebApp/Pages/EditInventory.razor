@@ -1,0 +1,60 @@
+﻿@page "/edetinventory/{id}"
+
+@inject IViewInventoryByIdUseCase ViewInventoryByIdUseCase
+@inject IEditInventoryUseCase EditInventoryUseCase
+@inject NavigationManager MavigationManager
+
+<h3>Edit Inventory</h3>
+
+@if (_inventory != null)
+{
+    <EditForm Model="_inventory" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label class="form-label" for="name">Inventory name</label>
+            <InputText class="form-control" id="name" @bind-Value="_inventory.Name" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="quantity">Quantity</label>
+            <InputNumber class="form-control" id="quantity" @bind-Value="_inventory.Quantity" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="price">Quantity</label>
+            <InputNumber class="form-control" id="price" @bind-Value="_inventory.Price" />
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-outline-primary">Submit</button>
+
+    </EditForm>
+}
+
+
+@code {
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    private Inventory? _inventory;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _inventory = await ViewInventoryByIdUseCase.ExecuteAsync(Guid.Parse(Id ?? ""));
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (_inventory != null)
+        {
+            await EditInventoryUseCase.ExecuteAsync(_inventory);
+        }
+
+        MavigationManager.NavigateTo("/inventories");
+
+    }
+}
