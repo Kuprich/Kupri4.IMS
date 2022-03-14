@@ -21,10 +21,11 @@ namespace Kupri4.IMS.Plugins.EFCore
 
         public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
         {
-
-            return await _db.Inventories
-                .Where(x => x.Name!.Contains(name, StringComparison.OrdinalIgnoreCase))
+            var inventories = await _db.Inventories
+                .Where(x => x.Name!.Contains(name.Trim(), StringComparison.OrdinalIgnoreCase))
                 .ToListAsync();
+
+            return inventories;
         }
 
         public async Task<Inventory> GetInventory(Guid id)

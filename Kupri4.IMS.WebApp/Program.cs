@@ -1,7 +1,9 @@
 using Kupri4.IMS.Plugins.EFCore;
-using Kupri4.IMS.UseCases;
-using Kupri4.IMS.UseCases.Interfaces;
+using Kupri4.IMS.UseCases.Inventories;
+using Kupri4.IMS.UseCases.Inventories.Interfaces;
 using Kupri4.IMS.UseCases.PluginInterfaces;
+using Kupri4.IMS.UseCases.Products;
+using Kupri4.IMS.UseCases.Products.Interfaces;
 using Kupri4.IMS.WebApp.Areas.Identity;
 using Kupri4.IMS.WebApp.Data;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -29,12 +31,17 @@ builder.Services.AddDbContext<IMSDbContext>(options =>
 
 // DI Repositories
 builder.Services.AddTransient<IInventoryRepository, InventoryRepository>();
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
 
 // DI Use cases
+// --inventories
 builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
 builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
 builder.Services.AddTransient<IEditInventoryUseCase, EditInventoryUseCase>();
 builder.Services.AddTransient<IViewInventoryByIdUseCase, ViewInventoryByIdUseCase>();
+
+// --products
+builder.Services.AddTransient<IViewProductsByNameUseCase, ViewProductsByNameUseCase>();
 
 var app = builder.Build();
 

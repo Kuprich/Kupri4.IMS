@@ -1,12 +1,11 @@
 ﻿using Kupri4.IMS.CoreBusiness;
 
-namespace Kupri4.IMS.UseCases.PluginInterfaces
+namespace Kupri4.IMS.UseCases.PluginInterfaces;
+
+public interface IInventoryRepository
 {
-    public interface IInventoryRepository
-    {
-        Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name);
-        Task AddInventoryAsync(Inventory inventory);
-        Task UpdateInventoryAsync(Inventory inventory);
-        Task<Inventory> GetInventory(Guid id);
-    }
+    Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name);
+    Task AddInventoryAsync(Inventory inventory);
+    Task UpdateInventoryAsync(Inventory inventory);
+    Task<Inventory> GetInventory(Guid id);
 }

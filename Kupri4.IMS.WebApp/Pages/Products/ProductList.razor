@@ -1,0 +1,56 @@
+﻿@page "/products"
+
+@inject NavigationManager NavigationManager
+
+<h3>Product List</h3>
+<br />
+<ViewProductsComponent OnSearchProductsCallback="OnSearchProduct"/>
+
+<button type="button" class="btn btn-link" @onclick="NavigateToAddProduct">Add new product</button>
+<br />
+
+@if(_products != null && _products.Count != 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in _products)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>@product.Price.ToString("C2")</td>
+                    <td>
+                        <a class="btn btn-outline-success" @onclick="() => NavigateToEditProduct(product.Id)">Edit</a>
+                        <a class="btn btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Product>? _products;
+
+    private void OnSearchProduct(List<Product> products)
+    {
+        _products = products ?? new List<Product>();
+    }
+    private void NavigateToAddProduct()
+    {
+        NavigationManager.NavigateTo("/addproduct");
+    }
+    private void NavigateToEditProduct(Guid productId)
+    {
+        NavigationManager.NavigateTo($"/edetproduct/{productId}");
+    }
+
+}
