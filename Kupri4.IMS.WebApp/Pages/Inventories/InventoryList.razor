@@ -1,57 +1,34 @@
-﻿@page "/inventories"
-
+﻿
 @inject NavigationManager NavigationManager
 
-<h3>Inventory List</h3>
-<br />
-<ViewInventoriesComponent OnSearchInventoriesCallback="OnSearchInventories"/>
-
-<button type="button" class="btn btn-link" @onclick="NavigateToAddInventory">Add new inventory</button>
-<br />
-
-@if(_inventories != null && _inventories.Count != 0)
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var inventory in _inventories)
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Inventories != null && Inventories.Count > 0)
+        {
+            @foreach (var inventory in Inventories)
             {
-                <tr>
-                    <td>@inventory.Name</td>
-                    <td>@inventory.Quantity</td>
-                    <td>@inventory.Price.ToString("C2")</td>
-                    <td>
-                        <a class="btn btn-outline-success" @onclick="() => NavigateToEditInventory(inventory.Id)">Edit</a>
-                        <a class="btn btn-outline-danger">Delete</a>
-                    </td>
-                </tr>
+                <InventoryItem Inventory="inventory" />
             }
-        </tbody>
-    </table>
-}
+        }
+        else
+        {
+            <tr>
+                <td colspan="4">Inventory list is empty</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 
 @code {
-    private List<Inventory>? _inventories;
-
-    private void OnSearchInventories(List<Inventory> inventories)
-    {
-        _inventories = inventories ?? new List<Inventory>();
-    }
-    private void NavigateToAddInventory()
-    {
-        NavigationManager.NavigateTo("/addinventory");
-    }
-    private void NavigateToEditInventory(Guid inventoryId)
-    {
-        NavigationManager.NavigateTo($"/edetinventory/{inventoryId}");
-    }
-
-
+    [Parameter]
+    public List<Inventory>? Inventories { get; set; }
 }

@@ -18,5 +18,7 @@ namespace Kupri4.IMS.CoreBusiness
 
         [Range(0, double.MaxValue, ErrorMessage = "Price must be greater or equal to {0}")]
         public decimal Price { get; set; }
+
+        public List<ProductInventory> ProductInventories { get; set; } = new();
     }
 }

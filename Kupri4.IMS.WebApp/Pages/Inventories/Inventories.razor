@@ -1,0 +1,27 @@
+﻿@page "/inventories"
+
+@inject NavigationManager NavigationManager
+
+<h3>Inventory List</h3>
+<br />
+
+<ViewInventoriesComponent OnSearchInventoriesCallback="OnSearchInventories"/>
+
+<button type="button" class="btn btn-link" @onclick="NavigateToAddInventory">Add new inventory</button>
+<br />
+
+<InventoryList Inventories = "_inventories"/>
+
+@code {
+    private List<Inventory>? _inventories;
+
+    private void OnSearchInventories(List<Inventory> inventories)
+    {
+        _inventories = inventories ?? new List<Inventory>();
+    }
+    private void NavigateToAddInventory()
+    {
+        NavigationManager.NavigateTo("/addinventory");
+    }
+
+}

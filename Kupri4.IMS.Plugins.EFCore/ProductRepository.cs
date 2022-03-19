@@ -13,10 +13,20 @@ namespace Kupri4.IMS.Plugins.EFCore
             _db = iMSDbContext;
         }
 
-        public async Task<List<Product>> GetProductsByName(string name)
+        public async Task AddProduct(Product product)
+        {
+            if (product != null)
+            {
+                _db.Products.Add(product);
+                await _db.SaveChangesAsync();
+            }
+
+        }
+
+        public async Task<List<Product>> GetProductsByNameAsync(string name)
         {
             var products = await _db.Products
-                .Where(x => x.Name!.Contains(name.Trim(), StringComparison.OrdinalIgnoreCase))
+                .Where(x => x.Name!.ToLower().Contains(name.ToLower()))
                 .ToListAsync();
 
             return products;

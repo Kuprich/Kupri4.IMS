@@ -15,14 +15,17 @@ namespace Kupri4.IMS.Plugins.EFCore
 
         public async Task AddInventoryAsync(Inventory inventory)
         {
-            _db.Inventories.Add(inventory);
-            await _db.SaveChangesAsync();
+            if (inventory != null)
+            {
+                _db.Inventories.Add(inventory);
+                await _db.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name)
         {
             var inventories = await _db.Inventories
-                .Where(x => x.Name!.Contains(name.Trim(), StringComparison.OrdinalIgnoreCase))
+                .Where(x => x.Name!.ToLower().Contains(name.ToLower()))
                 .ToListAsync();
 
             return inventories;

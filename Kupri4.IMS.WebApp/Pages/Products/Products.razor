@@ -1,0 +1,28 @@
+﻿@page "/products"
+
+@inject NavigationManager NavigationManager
+
+<h3>Product List</h3>
+<br />
+
+<ViewProductsComponent OnSearchProductsCallback="OnSearchProduct"/>
+
+<button type="button" class="btn btn-link" @onclick="NavigateToAddProduct">Add new product</button>
+<br />
+
+<ProductList Products = "_products"/>
+
+
+@code {
+    private List<Product>? _products;
+
+    private void OnSearchProduct(List<Product> products)
+    {
+        _products = products ?? new List<Product>();
+    }
+    private void NavigateToAddProduct()
+    {
+        NavigationManager.NavigateTo("/addproduct");
+    }
+
+}

@@ -22,12 +22,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-builder.Services.AddSingleton<WeatherForecastService>();
 
-builder.Services.AddDbContext<IMSDbContext>(options =>
-{
-    options.UseInMemoryDatabase("Kupri4.IMS");
-});
+builder.Services.AddImsDependendencies();
 
 // DI Repositories
 builder.Services.AddTransient<IInventoryRepository, InventoryRepository>();
@@ -42,6 +38,9 @@ builder.Services.AddTransient<IViewInventoryByIdUseCase, ViewInventoryByIdUseCas
 
 // --products
 builder.Services.AddTransient<IViewProductsByNameUseCase, ViewProductsByNameUseCase>();
+builder.Services.AddTransient<IAddProductUseCase, AddProductUseCase>();
+
+
 
 var app = builder.Build();
 
@@ -50,10 +49,8 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var imsDbContext = scope.ServiceProvider.GetRequiredService<IMSDbContext>();
-
-        imsDbContext.Database.EnsureDeleted();
-        imsDbContext.Database.EnsureCreated();
-
+        
+        DbInitializer.Initialize(imsDbContext);
     }
     catch (Exception)
     {

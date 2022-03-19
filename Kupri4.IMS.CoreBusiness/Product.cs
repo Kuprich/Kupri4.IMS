@@ -17,5 +17,7 @@ namespace Kupri4.IMS.CoreBusiness
 
         [Required]
         public decimal Price { get; set; }
+
+        public List<ProductInventory> ProductInventories { get; set; } = new();
     }
 }
