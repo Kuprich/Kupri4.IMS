@@ -5,18 +5,19 @@
 <h3>Product List</h3>
 <br />
 
-<ViewProductsComponent OnSearchProductsCallback="OnSearchProduct"/>
+<SearchProductsComponent OnSearchProducts="SearchProduct"/>
 
 <button type="button" class="btn btn-link" @onclick="NavigateToAddProduct">Add new product</button>
 <br />
 
-<ProductList Products = "_products"/>
+<ProductListComponent Products = "_products"/>
 
 
 @code {
+
     private List<Product>? _products;
 
-    private void OnSearchProduct(List<Product> products)
+    private void SearchProduct(List<Product> products)
     {
         _products = products ?? new List<Product>();
     }

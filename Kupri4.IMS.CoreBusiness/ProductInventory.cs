@@ -16,7 +16,7 @@ namespace Kupri4.IMS.CoreBusiness
         public Inventory? Inventory { get; set; }
 
         [Required]
-
+        [Range(1, double.MaxValue, ErrorMessage = "Price must be greater or equal to {1}")]
         public int InventoryQuantity { get; set; }
     }
 }

@@ -1,0 +1,37 @@
+﻿@if (Inventory != null)
+{
+    <EditForm Model="Inventory" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label class="form-label" for="name">Inventory name</label>
+            <InputText class="form-control" id="name" @bind-Value="Inventory.Name" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="quantity">Quantity</label>
+            <InputNumber class="form-control" id="quantity" @bind-Value="Inventory.Quantity" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="price">Quantity</label>
+            <InputNumber class="form-control" id="price" @bind-Value="Inventory.Price" />
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-outline-primary">Submit</button>
+
+    </EditForm>
+
+}
+
+@code {
+    [Parameter]
+    public Inventory? Inventory { get; set; }
+
+    [Parameter]
+    public EventCallback<EditContext> OnValidSubmit { get; set; }
+
+}

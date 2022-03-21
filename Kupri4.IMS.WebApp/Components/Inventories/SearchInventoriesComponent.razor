@@ -26,12 +26,12 @@
     }
 
     [Parameter]
-    public EventCallback<List<Inventory>> OnSearchInventoriesCallback { get; set; }
+    public EventCallback<List<Inventory>> OnSearchInventories { get; set; }
 
     private async Task ViewInventoriesAsync()
     {
         List<Inventory> inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(InventoryNameToSearch ?? string.Empty)).ToList();
 
-        await OnSearchInventoriesCallback.InvokeAsync(inventories);
+        await OnSearchInventories.InvokeAsync(inventories);
     }
 }

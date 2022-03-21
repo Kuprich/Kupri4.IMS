@@ -25,30 +25,38 @@
         <InputNumber class="form-control" id="price" @bind-Value="_product.Price" />
     </div>
 
-    <div class="form-group">
-        <label class="form-label" for="inventoryList">Inventory list</label>
+    <br />
 
-        <ProductInventories />
+    <EditForm Model="_productInventories">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    </div>
+        <div class="form-group">
+            <ProductInventoriesComponent ProductInventories="_productInventories" Product="_product" />
+        </div>
+
+    </EditForm>
+
 
     <br />
 
-
     <button type="submit" class="btn btn-outline-primary">Submit</button>
-
-
 
 </EditForm>
 
 
 @code {
-
-
     private Product _product = new();
+
+    private List<ProductInventory>? _productInventories = new();
 
     private async Task HandleValidSubmit()
     {
+        if (_productInventories != null && _productInventories.Count > 0)
+        {
+            _product.ProductInventories.AddRange(_productInventories);
+        }
+
         await AddProductUseCase.ExecuteAsync(_product);
         NavigationManager.NavigateTo("/products");
     }

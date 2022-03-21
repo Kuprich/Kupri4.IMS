@@ -1,0 +1,32 @@
+﻿@inject NavigationManager NavigationManager
+
+@if (Inventory != null)
+{
+    <tr>
+        <td>@Inventory.Name</td>
+        <td>@Inventory.Quantity</td>
+        <td>@Inventory.Price.ToString("C2")</td>
+        <td>
+            <a class="btn btn-outline-success" @onclick="() => NavigateToEditInventory(Inventory.Id)">Edit</a>
+            <a class="btn btn-outline-danger" @onclick="() => DeleteInventory(Inventory.Id)">Delete</a>
+        </td>
+    </tr>
+}
+
+
+@code {
+
+    [Parameter]
+    public Inventory? Inventory { get; set; }
+
+    private void NavigateToEditInventory(Guid inventoryId)
+    {
+        NavigationManager.NavigateTo($"/edetinventory/{inventoryId}");
+    }
+    private void DeleteInventory(Guid inventoryId)
+    {
+
+    }
+
+}
+

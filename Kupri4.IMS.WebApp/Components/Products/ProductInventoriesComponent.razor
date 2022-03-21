@@ -1,0 +1,113 @@
+﻿
+<div class="row">
+    <div class="col-7">
+        <SearchInventoriesComponent OnSearchInventories="SearchInventories" />
+        <table class="table table-hover table-light">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (_inventories != null)
+                {
+                    @foreach (var inventory in _inventories)
+                    {
+                        <tr>
+                            <td>@inventory.Name</td>
+                            <td>@inventory.Price.ToString("C2")</td>
+                            <td>
+                                <button type="button"
+                                class="btn btn-outline-secondary"
+                                @onclick="() => AddToProductInventories(inventory)">
+                                    Add to product
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3">Inventories not found</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-5">
+        <div class="p-2">Inventories owned by the product</div>
+        @if (ProductInventories != null)
+        {
+            <table class="table table-hover table-light">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Count</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var productInventory in ProductInventories)
+                    {
+                        <tr>
+                            <td>@productInventory.Inventory!.Name</td>
+                            <td><InputNumber @bind-Value="productInventory.InventoryQuantity" /></td>
+                            <td class="text-muted">Remove</td>
+
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<br />
+
+@code {
+    [Parameter]
+    public List<ProductInventory>? ProductInventories { get; set; }
+
+    [Parameter]
+    public Product? Product { get; set; }
+
+    private List<Inventory>? _inventories = new();
+
+    private void SearchInventories(List<Inventory> inventories)
+    {
+        _inventories = inventories ?? new List<Inventory>();
+    }
+    private void AddToProductInventories(Inventory inventory)
+    {
+        if (ProductInventories == null)
+        {
+            ProductInventories = new();
+        }
+
+        var productInventory = ProductInventories.FirstOrDefault(x => x.Inventory!.Id == inventory.Id);
+
+        if (productInventory == null)
+        {
+            productInventory = new()
+                {
+                    Inventory = inventory,
+                    Product = Product,
+                    InventoryQuantity = 1
+                };
+
+            ProductInventories.Add(productInventory);
+
+        }
+        else
+        {
+            productInventory.InventoryQuantity++;
+        }
+
+    }
+}

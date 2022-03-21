@@ -1,7 +1,7 @@
 ﻿
 @inject NavigationManager NavigationManager
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Name</th>
@@ -15,7 +15,7 @@
         {
             @foreach (var inventory in Inventories)
             {
-                <InventoryItem Inventory="inventory" />
+                <InventoryItemComponent Inventory="inventory" />
             }
         }
         else
