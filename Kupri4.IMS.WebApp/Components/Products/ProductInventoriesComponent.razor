@@ -40,7 +40,7 @@
 
     <div class="col-5">
         <div class="p-2">Inventories owned by the product</div>
-        @if (ProductInventories != null)
+        @if (Product?.ProductInventories != null)
         {
             <table class="table table-hover table-light">
                 <thead>
@@ -52,7 +52,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach (var productInventory in ProductInventories)
+                    @foreach (var productInventory in Product.ProductInventories)
                     {
                         <tr>
                             <td>@productInventory.Inventory!.Name</td>
@@ -71,8 +71,6 @@
 <br />
 
 @code {
-    [Parameter]
-    public List<ProductInventory>? ProductInventories { get; set; }
 
     [Parameter]
     public Product? Product { get; set; }
@@ -85,23 +83,22 @@
     }
     private void AddToProductInventories(Inventory inventory)
     {
-        if (ProductInventories == null)
+        if (Product == null)
         {
-            ProductInventories = new();
+            Product = new();
         }
 
-        var productInventory = ProductInventories.FirstOrDefault(x => x.Inventory!.Id == inventory.Id);
+        var productInventory = Product.ProductInventories.FirstOrDefault(x => x.Inventory!.Id == inventory.Id);
 
         if (productInventory == null)
         {
             productInventory = new()
                 {
                     Inventory = inventory,
-                    Product = Product,
                     InventoryQuantity = 1
                 };
 
-            ProductInventories.Add(productInventory);
+            Product.ProductInventories.Add(productInventory);
 
         }
         else
