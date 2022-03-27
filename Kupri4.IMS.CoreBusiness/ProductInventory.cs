@@ -1,22 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using FluentValidation;
+using System.ComponentModel.DataAnnotations;
 
-namespace Kupri4.IMS.CoreBusiness
+namespace Kupri4.IMS.CoreBusiness;
+
+public class ProductInventory
 {
-    public class ProductInventory
+    [Key]
+    public Guid Id { get; set; }
+
+    public int InventoryQuantity { get; set; }
+
+    public Product? Product { get; set; }
+
+    public Inventory? Inventory { get; set; }
+
+}
+
+public class ProductInventoryValidator : AbstractValidator<ProductInventory>
+{
+    public ProductInventoryValidator()
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
-        public Guid Id { get; set; }
-
-        [Required]
-        public Product? Product { get; set; }
-
-        [Required]
-        public Inventory? Inventory { get; set; }
-
-        [Required]
-        [Range(1, double.MaxValue, ErrorMessage = "Price must be greater or equal to {1}")]
-        public int InventoryQuantity { get; set; }
+        RuleFor(x => x.InventoryQuantity)
+            .GreaterThanOrEqualTo(1);
     }
 }

@@ -1,24 +1,34 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using FluentValidation;
 
 namespace Kupri4.IMS.CoreBusiness
 {
     public class Inventory
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
+
         public Guid Id { get; set; }
 
-        [Required]
-        [MinLength(3, ErrorMessage = "Minimal length is 3 characters")]
         public string? Name { get; set; }
 
-        [Range(0, int.MaxValue, ErrorMessage = "Quantity must be greater or equal to {0}")]
         public int Quantity { get; set; }
 
-        [Range(0, double.MaxValue, ErrorMessage = "Price must be greater or equal to {0}")]
         public decimal Price { get; set; }
 
-        public List<ProductInventory> ProductInventories { get; set; } = new();
+        public ICollection<ProductInventory> ProductInventories { get; set; } = new List<ProductInventory>();
+    }
+
+    public class InventoryValidator : AbstractValidator<Inventory>
+    {
+        public InventoryValidator()
+        {
+            RuleFor(x => x.Name)
+                .NotNull().WithMessage($"\"{nameof(Inventory.Name)}\": Field is required")
+                .MinimumLength(3).WithMessage($"\"{nameof(Inventory.Name)}\": Minimal length is 3");
+
+            RuleFor(x => x.Quantity)
+               .ExclusiveBetween(1, 999).WithMessage($"\"{nameof(Inventory.Quantity)}\": Must be between 1 and 999");
+
+            RuleFor(x => x.Price)
+               .ExclusiveBetween(0.01m, 999999m).WithMessage($"\"{nameof(Inventory.Price)}\": Must be positive");
+        }
     }
 }

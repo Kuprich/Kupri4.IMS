@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kupri4.IMS.Plugins.EFCore.Migrations
 {
     [DbContext(typeof(IMSDbContext))]
-    [Migration("20220319165759_Initial")]
+    [Migration("20220327131715_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,7 @@ namespace Kupri4.IMS.Plugins.EFCore.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")

@@ -1,23 +1,38 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using FluentValidation;
 
 namespace Kupri4.IMS.CoreBusiness
 {
     public class Product
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
         public Guid Id { get; set; }
 
-        [Required]
-        [MinLength(3, ErrorMessage = "Minimal length is 3 characters")]
         public string? Name { get; set; }
 
         public string? Description { get; set; } = string.Empty;
 
-        [Required]
         public decimal Price { get; set; }
 
-        public List<ProductInventory> ProductInventories { get; set; } = new();
+        public ICollection<ProductInventory> ProductInventories { get; set; } = new List<ProductInventory>();
+    }
+
+    public class ProductValidator : AbstractValidator<Product>
+    {
+        public ProductValidator()
+        {
+            RuleFor(x => x.Name)
+                .NotNull().WithMessage($"\"{nameof(Product.Name)}\": Field is required")
+                .MinimumLength(3).WithMessage($"\"{nameof(Product.Name)}\": Minimal length is 3 characters");
+
+            RuleFor(x => x.Description)
+                .NotNull().WithMessage($"\"{nameof(Product.Description)}\": Field is required")
+                .MinimumLength(3).WithMessage($"\"{nameof(Product.Description)}\": Minimal length is 5 characters");
+
+            RuleFor(x => x.Price)
+                .NotEmpty().WithMessage($"\"{nameof(Product.Price)}\": Field is requireds required")
+                .GreaterThan(0).WithMessage($"\"{nameof(Product.Price)}\": Must be positive");
+
+            RuleForEach(x => x.ProductInventories)
+                .SetValidator(new ProductInventoryValidator());
+        }
     }
 }

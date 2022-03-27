@@ -1,4 +1,5 @@
 ﻿
+
 <div class="row">
     <div class="col-7">
         <SearchInventoriesComponent OnSearchInventories="SearchInventories" />
@@ -39,6 +40,8 @@
     </div>
 
     <div class="col-5">
+
+
         <div class="p-2">Inventories owned by the product</div>
         @if (Product?.ProductInventories != null)
         {
@@ -57,14 +60,18 @@
                         <tr>
                             <td>@productInventory.Inventory!.Name</td>
                             <td><InputNumber @bind-Value="productInventory.InventoryQuantity" /></td>
-                            <td class="text-muted">Remove</td>
-
+                            <td class="text-muted">
+                                <button class="btn btn-outline-secondary" @onclick="() => RemoveFromProductInventories(productInventory.Inventory)">Remove</button>
+                            </td>
                         </tr>
                     }
 
                 </tbody>
             </table>
         }
+
+
+
     </div>
 </div>
 
@@ -81,11 +88,12 @@
     {
         _inventories = inventories ?? new List<Inventory>();
     }
+
     private void AddToProductInventories(Inventory inventory)
     {
         if (Product == null)
         {
-            Product = new();
+            return;
         }
 
         var productInventory = Product.ProductInventories.FirstOrDefault(x => x.Inventory!.Id == inventory.Id);
@@ -99,12 +107,26 @@
                 };
 
             Product.ProductInventories.Add(productInventory);
-
         }
         else
         {
             productInventory.InventoryQuantity++;
         }
-
     }
+
+    private void RemoveFromProductInventories(Inventory inventory)
+    {
+        if (Product == null)
+        {
+            return;
+        }
+
+        var productInventory = Product.ProductInventories.FirstOrDefault(x => x.Inventory!.Id == inventory.Id);
+
+        if (productInventory != null)
+        {
+            Product.ProductInventories.Remove(productInventory);
+        }
+    }
+
 }

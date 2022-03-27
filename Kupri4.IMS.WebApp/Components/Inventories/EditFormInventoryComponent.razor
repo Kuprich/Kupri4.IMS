@@ -1,7 +1,7 @@
 ﻿@if (Inventory != null)
 {
     <EditForm Model="Inventory" OnValidSubmit="OnValidSubmit">
-        <DataAnnotationsValidator />
+        <FluentValidationValidator/>
         <ValidationSummary />
 
         <div class="form-group">
@@ -15,7 +15,7 @@
         </div>
 
         <div class="form-group">
-            <label class="form-label" for="price">Quantity</label>
+            <label class="form-label" for="price">Price</label>
             <InputNumber class="form-control" id="price" @bind-Value="Inventory.Price" />
         </div>
 

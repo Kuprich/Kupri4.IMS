@@ -1,4 +1,5 @@
 using Kupri4.IMS.Plugins.EFCore;
+using Kupri4.IMS.Plugins.EFCore.Repositories;
 using Kupri4.IMS.UseCases.Inventories;
 using Kupri4.IMS.UseCases.Inventories.Interfaces;
 using Kupri4.IMS.UseCases.PluginInterfaces;
@@ -49,7 +50,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var imsDbContext = scope.ServiceProvider.GetRequiredService<IMSDbContext>();
-        
+
         DbInitializer.Initialize(imsDbContext);
     }
     catch (Exception)

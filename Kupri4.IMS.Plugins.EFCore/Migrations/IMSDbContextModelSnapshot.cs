@@ -45,6 +45,7 @@ namespace Kupri4.IMS.Plugins.EFCore.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")

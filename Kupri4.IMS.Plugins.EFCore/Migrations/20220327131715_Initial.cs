@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -29,7 +28,7 @@ namespace Kupri4.IMS.Plugins.EFCore.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -42,9 +41,9 @@ namespace Kupri4.IMS.Plugins.EFCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    InventoryQuantity = table.Column<int>(type: "INTEGER", nullable: false),
                     ProductId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    InventoryId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    InventoryQuantity = table.Column<int>(type: "INTEGER", nullable: false)
+                    InventoryId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
