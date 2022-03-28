@@ -31,7 +31,7 @@ public class InventoryRepository : IInventoryRepository
         return inventories;
     }
 
-    public async Task<Inventory> GetInventory(Guid id)
+    public async Task<Inventory> GetInventoryAsync(Guid id)
     {
         return await _db.Inventories.FindAsync(id) ?? new Inventory();
     }

@@ -13,14 +13,33 @@ public class ProductRepository : IProductRepository
         _db = iMSDbContext;
     }
 
-    public async Task AddProduct(Product product)
+    public async Task AddProductAsync(Product product)
     {
         if (product != null)
         {
             _db.Products.Add(product);
             await _db.SaveChangesAsync();
         }
+    }
 
+    public async Task UpdateProductAsync(Product product)
+    {
+        var updatedProduct = await _db.Products.FindAsync(product.Id);
+
+        if (updatedProduct != null)
+        {
+            updatedProduct.Name = product.Name;
+            updatedProduct.Description = product.Description;
+            updatedProduct.Price = product.Price;
+            updatedProduct.ProductInventories = product.ProductInventories;
+
+            await _db.SaveChangesAsync();
+        }
+    }
+
+    public async Task<Product> GetProductByIdAsync(Guid id)
+    {
+        return await _db.Products.FindAsync(id) ?? new Product();
     }
 
     public async Task<List<Product>> GetProductsByNameAsync(string name)

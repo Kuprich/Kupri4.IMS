@@ -61,7 +61,11 @@
                             <td>@productInventory.Inventory!.Name</td>
                             <td><InputNumber @bind-Value="productInventory.InventoryQuantity" /></td>
                             <td class="text-muted">
-                                <button class="btn btn-outline-secondary" @onclick="() => RemoveFromProductInventories(productInventory.Inventory)">Remove</button>
+                                <button type="button"
+                                class="btn btn-outline-secondary"
+                                @onclick="() => RemoveFromProductInventories(productInventory.Inventory)">
+                                    Remove
+                                </button>
                             </td>
                         </tr>
                     }

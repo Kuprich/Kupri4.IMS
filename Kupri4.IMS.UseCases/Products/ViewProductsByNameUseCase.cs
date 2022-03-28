@@ -12,6 +12,7 @@ public class ViewProductsByNameUseCase : IViewProductsByNameUseCase
     {
         _productRepository = productRepository;
     }
+
     public async Task<List<Product>> ExecuteAsync(string name = "")
     {
         return await _productRepository.GetProductsByNameAsync(name);

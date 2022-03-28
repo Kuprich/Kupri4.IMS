@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Kupri4.IMS.CoreBusiness;
 
@@ -14,13 +13,4 @@ public class ProductInventory
 
     public Inventory? Inventory { get; set; }
 
-}
-
-public class ProductInventoryValidator : AbstractValidator<ProductInventory>
-{
-    public ProductInventoryValidator()
-    {
-        RuleFor(x => x.InventoryQuantity)
-            .GreaterThanOrEqualTo(1);
-    }
 }

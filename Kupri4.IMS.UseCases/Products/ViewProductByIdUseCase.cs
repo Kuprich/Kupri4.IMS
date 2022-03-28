@@ -4,17 +4,17 @@ using Kupri4.IMS.UseCases.Products.Interfaces;
 
 namespace Kupri4.IMS.UseCases.Products;
 
-public class AddProductUseCase : IAddProductUseCase
+public class ViewProductByIdUseCase : IViewProductByIdUseCase
 {
     private readonly IProductRepository _productRepository;
 
-    public AddProductUseCase(IProductRepository productRepository)
+    public ViewProductByIdUseCase(IProductRepository productRepository)
     {
         _productRepository = productRepository;
     }
 
-    public async Task ExecuteAsync(Product product)
+    public async Task<Product> ExecuteAsync(Guid Id)
     {
-        await _productRepository.AddProductAsync(product);
+        return await _productRepository.GetProductByIdAsync(Id);
     }
 }

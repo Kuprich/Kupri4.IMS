@@ -15,6 +15,6 @@ public class ViewInventoryByIdUseCase : IViewInventoryByIdUseCase
 
     public async Task<Inventory> ExecuteAsync(Guid id)
     {
-        return await _inventoryRepository.GetInventory(id);
+        return await _inventoryRepository.GetInventoryAsync(id);
     }
 }
