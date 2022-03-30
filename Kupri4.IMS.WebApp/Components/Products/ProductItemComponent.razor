@@ -1,4 +1,5 @@
 ﻿@inject NavigationManager NavigationManager
+@inject IDeleteProductUseCase DeleteProductUseCase
 
 @if (Product != null)
 {
@@ -20,14 +21,18 @@
     [Parameter]
     public Product? Product { get; set; }
 
-     private void NavigateToEditProduct(Guid productId)
+    [Parameter]
+    public EventCallback OnProductDeleted { get; set; }
+
+    private void NavigateToEditProduct(Guid productId)
     {
         NavigationManager.NavigateTo($"/editproduct/{productId}");
     }
 
-    private void DeleteProduct(Guid productId)
+    private async Task DeleteProduct(Guid productId)
     {
-
+        await DeleteProductUseCase.ExecuteAsync(productId);
+        await OnProductDeleted.InvokeAsync();
     }
 
 }

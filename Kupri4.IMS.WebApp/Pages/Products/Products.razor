@@ -1,6 +1,7 @@
 ﻿@page "/products"
 
 @inject NavigationManager NavigationManager
+@inject IViewProductsByNameUseCase ViewProductsByNameUseCase
 
 <h3>Product List</h3>
 <br />
@@ -10,7 +11,7 @@
 <button type="button" class="btn btn-link" @onclick="NavigateToAddProduct">Add new product</button>
 <br />
 
-<ProductListComponent Products = "_products"/>
+<ProductListComponent Products = "_products" OnProductDeleted="UpdateProductList"/>
 
 
 @code {
@@ -21,9 +22,15 @@
     {
         _products = products ?? new List<Product>();
     }
+
     private void NavigateToAddProduct()
     {
         NavigationManager.NavigateTo("/addproduct");
+    }
+
+    private async Task UpdateProductList()
+    {
+        _products = await ViewProductsByNameUseCase.ExecuteAsync(string.Empty);
     }
 
 }

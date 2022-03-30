@@ -5,7 +5,7 @@
         <FluentValidationValidator />
 
         <div class="form-group">
-            <label class="form-label" for="name">Inventory name</label>
+            <label class="form-label" for="name">Product name</label>
             <ValidationMessage For="() => Product.Name" />
             <InputText class="form-control" id="name" @bind-Value="Product.Name" />
         </div>

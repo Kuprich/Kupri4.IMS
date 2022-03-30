@@ -50,6 +50,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Count</th>
+                        <th>Price</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -60,6 +61,7 @@
                         <tr>
                             <td>@productInventory.Inventory!.Name</td>
                             <td><InputNumber @bind-Value="productInventory.InventoryQuantity" /></td>
+                            <td>@((productInventory.Inventory.Price * productInventory.InventoryQuantity).ToString("C2"))</td>
                             <td class="text-muted">
                                 <button type="button"
                                 class="btn btn-outline-secondary"
@@ -69,9 +71,14 @@
                             </td>
                         </tr>
                     }
+                    <tr>
+                        <th colspan="2">Total price:</th>
+                        <th colspan="2">@_totalPrice.ToString("C2")</th>
 
+                    </tr>
                 </tbody>
             </table>
+
         }
 
 
@@ -87,6 +94,8 @@
     public Product? Product { get; set; }
 
     private List<Inventory>? _inventories = new();
+
+    private decimal _totalPrice => Product!.ProductInventories.Sum(x => x.InventoryQuantity * x.Inventory!.Price);
 
     private void SearchInventories(List<Inventory> inventories)
     {

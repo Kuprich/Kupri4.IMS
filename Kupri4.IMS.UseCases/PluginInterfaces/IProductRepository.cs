@@ -8,5 +8,6 @@ namespace Kupri4.IMS.UseCases.PluginInterfaces
         Task AddProductAsync(Product product);
         Task<Product> GetProductByIdAsync(Guid id);
         Task UpdateProductAsync(Product product);
+        Task RemoveProductAsync(Guid productId);
     }
 }

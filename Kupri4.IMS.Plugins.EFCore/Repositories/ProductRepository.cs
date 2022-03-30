@@ -50,4 +50,16 @@ public class ProductRepository : IProductRepository
 
         return products;
     }
+
+    public async Task RemoveProductAsync(Guid productId)
+    {
+        var product = await _db.Products.FindAsync(productId);
+
+        if (product != null)
+        {
+            _db.Products.Remove(product);
+
+            await _db.SaveChangesAsync();
+        }
+    }
 }

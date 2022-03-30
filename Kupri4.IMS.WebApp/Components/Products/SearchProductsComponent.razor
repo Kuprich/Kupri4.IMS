@@ -7,18 +7,22 @@
            class="form-control"
            type="text"
            placeholder="Type product name here to search"
-           @bind-value="ProductNameToSearch">
-
-    <button class="btn btn-outline-success"
-            type="button"
-            @onclick="@(async () => await ViewProductsAsync())">
-        View
-    </button>
+           @bind-value="ProductNameToSearch"
+           @bind-value:event="oninput">
 
 </div>
 
 @code {
-    private string? ProductNameToSearch;
+    private string? _productNameToSearch;
+    public string? ProductNameToSearch
+    {
+        get => _productNameToSearch?.Trim();
+        set
+        {
+            _productNameToSearch = value;
+            ViewProductsAsync().Wait();
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {

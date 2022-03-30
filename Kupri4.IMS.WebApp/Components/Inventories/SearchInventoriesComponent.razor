@@ -1,5 +1,4 @@
-﻿
-@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+﻿@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
 
 <div class="input-group mb-3">
 
@@ -7,18 +6,24 @@
            class="form-control"
            type="text"
            placeholder="Type inventory name here to search"
-           @bind-value="InventoryNameToSearch">
-
-    <button class="btn btn-outline-success"
-            type="button"
-            @onclick="@(async () => await ViewInventoriesAsync())">
-        View
-    </button>
+           @bind-value="InventoryNameToSearch"
+           @bind-value:event="oninput" />
 
 </div>
 
 @code {
-    private string? InventoryNameToSearch;
+    private string? _inventoryNameToSearch;
+
+    public string? InventoryNameToSearch
+    {
+        get => _inventoryNameToSearch?.Trim();
+        set
+        {
+            _inventoryNameToSearch = value;
+            ViewInventoriesAsync().Wait();
+        }
+    }
+
 
     protected override async Task OnInitializedAsync()
     {

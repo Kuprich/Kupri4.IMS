@@ -15,7 +15,7 @@
         {
             @foreach (var product in Products)
             {
-               <ProductItemComponent Product="product"/>
+               <ProductItemComponent Product="product" OnProductDeleted="OnProductDeleted"/>
             }
         }
         else
@@ -33,5 +33,8 @@
 
     [Parameter]
     public List<Product>? Products { get; set; }
+
+    [Parameter]
+    public EventCallback OnProductDeleted{ get; set; }
 
 }
