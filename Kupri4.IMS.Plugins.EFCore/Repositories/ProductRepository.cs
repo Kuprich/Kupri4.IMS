@@ -37,14 +37,19 @@ public class ProductRepository : IProductRepository
         }
     }
 
-    public async Task<Product> GetProductByIdAsync(Guid id)
+    public async Task<Product> GetProductByIdAsync(Guid productId)
     {
-        return await _db.Products.FindAsync(id) ?? new Product();
+        var product = await _db.Products
+            .Include(x => x.ProductInventories).ThenInclude(x => x.Inventory)
+            .FirstOrDefaultAsync(x => x.Id == productId);
+
+        return product ?? new Product();
     }
 
     public async Task<List<Product>> GetProductsByNameAsync(string name)
     {
         var products = await _db.Products
+            .Include(x => x.ProductInventories).ThenInclude(x => x.Inventory)
             .Where(x => x.Name!.ToLower().Contains(name.ToLower()))
             .ToListAsync();
 

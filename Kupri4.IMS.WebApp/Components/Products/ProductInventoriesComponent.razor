@@ -41,10 +41,14 @@
 
     <div class="col-5">
 
-
         <div class="p-2">Inventories owned by the product</div>
         @if (Product?.ProductInventories != null)
         {
+            @foreach (var productInventory in Product.ProductInventories)
+            {
+                <ValidationMessage For="() => productInventory.InventoryQuantity" />
+            }
+
             <table class="table table-hover table-light">
                 <thead>
                     <tr>
@@ -60,7 +64,7 @@
                     {
                         <tr>
                             <td>@productInventory.Inventory!.Name</td>
-                            <td><InputNumber @bind-Value="productInventory.InventoryQuantity" /></td>
+                            <td><InputNumber min="1" @bind-Value="productInventory.InventoryQuantity" /></td>
                             <td>@((productInventory.Inventory.Price * productInventory.InventoryQuantity).ToString("C2"))</td>
                             <td class="text-muted">
                                 <button type="button"
