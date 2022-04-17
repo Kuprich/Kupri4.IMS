@@ -6,7 +6,8 @@ namespace Kupri4.IMS.Plugins.EFCore
 {
     public class IMSDbContext : DbContext
     {
-        public IMSDbContext(DbContextOptions<IMSDbContext> options) : base(options)
+        public IMSDbContext(DbContextOptions<IMSDbContext> options) 
+            : base(options)
         { }
 
         public DbSet<Inventory> Inventories => Set<Inventory>();
@@ -14,6 +15,8 @@ namespace Kupri4.IMS.Plugins.EFCore
         public DbSet<Product> Products => Set<Product>();
 
         public DbSet<ProductInventory> ProductInventories => Set<ProductInventory>();
+
+        public DbSet<InvenoryTransaction> InvenoriesTransactions => Set<InvenoryTransaction>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

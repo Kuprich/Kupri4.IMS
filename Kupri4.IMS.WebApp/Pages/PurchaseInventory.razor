@@ -1,0 +1,87 @@
+﻿@page "/purchaseinventory/{Id}"
+
+@inject NavigationManager NavigationManager
+@inject IViewInventoryByIdUseCase ViewInventoryByIdUseCase
+@inject IPurchaseInventoryUseCase PurchaseInventoryUseCase
+
+<h3>Purchase Inventory</h3>
+
+<EditForm Model="_purchaseViewModel" OnValidSubmit="OnValidSubmit" class="col-sm-12 col-md-8">
+
+    <FluentValidationValidator />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@_purchaseViewModel.Inventory!.Name</td>
+                <td>@_purchaseViewModel.Inventory!.Price.ToString("C2")</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="form-group">
+        <label class="form-label" for="purchaseOrder">Purchase order:</label>
+        <ValidationMessage For="() => _purchaseViewModel.PurchaseOrder" />
+        <InputText class="form-control" @bind-Value="_purchaseViewModel.PurchaseOrder" />
+    </div>
+
+
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <label class="form-label" for="QuantityToPurchase">Quantity To Purchase</label>
+            <ValidationMessage For="() => _purchaseViewModel.QuantityToPurchase" />
+            <InputNumber class="form-control" min="1" @bind-Value="_purchaseViewModel.QuantityToPurchase" />
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label class="form-label">Cost</label>
+            <input class="form-control" value="@_cost.ToString("C2")" disabled/>
+        </div>
+    </div>
+
+
+    <br />
+
+    <button type="submit" class="btn btn-outline-primary">Submit</button>
+
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public string? Id { get; set; }
+
+    PurchaseViewModel _purchaseViewModel = new();
+
+    decimal _cost => _purchaseViewModel.Inventory!.Price * _purchaseViewModel.QuantityToPurchase;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var inventory = await ViewInventoryByIdUseCase.ExecuteAsync(Guid.Parse(Id ?? ""));
+
+        _purchaseViewModel.Inventory = inventory;
+
+    }
+
+
+    public async Task OnValidSubmit()
+    {
+        InventoryTransactionDto inventoryTransactionDto = new();
+
+        inventoryTransactionDto.InventoryId = _purchaseViewModel.Inventory!.Id;
+        inventoryTransactionDto.PurchaseOrder = _purchaseViewModel.PurchaseOrder;
+        inventoryTransactionDto.InventoryQuantity = _purchaseViewModel.QuantityToPurchase;
+
+        await PurchaseInventoryUseCase.ExecuteAsync(inventoryTransactionDto);
+
+        NavigationManager.NavigateTo("/inventories");
+    }
+
+}

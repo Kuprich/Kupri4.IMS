@@ -29,6 +29,8 @@ builder.Services.AddImsDependendencies();
 // DI Repositories
 builder.Services.AddTransient<IInventoryRepository, InventoryRepository>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<IInventoryTransactRepository, InventoryTransactRepository>();
+
 
 // DI Use cases
 // --inventories
@@ -36,6 +38,7 @@ builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNa
 builder.Services.AddTransient<IViewInventoryByIdUseCase, ViewInventoryByIdUseCase>();
 builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
 builder.Services.AddTransient<IEditInventoryUseCase, EditInventoryUseCase>();
+builder.Services.AddTransient<IPurchaseInventoryUseCase, PurchaseInventoryUseCase>();
 
 // --products
 builder.Services.AddTransient<IViewProductsByNameUseCase, ViewProductsByNameUseCase>();

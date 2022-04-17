@@ -4,7 +4,6 @@ namespace Kupri4.IMS.CoreBusiness;
 
 public class ProductInventory
 {
-    [Key]
     public Guid Id { get; set; }
 
     public int InventoryQuantity { get; set; }

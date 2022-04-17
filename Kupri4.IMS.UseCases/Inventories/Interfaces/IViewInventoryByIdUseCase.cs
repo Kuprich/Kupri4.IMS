@@ -1,9 +1,8 @@
 ﻿using Kupri4.IMS.CoreBusiness;
 
-namespace Kupri4.IMS.UseCases.Inventories.Interfaces
+namespace Kupri4.IMS.UseCases.Inventories.Interfaces;
+
+public interface IViewInventoryByIdUseCase
 {
-    public interface IViewInventoryByIdUseCase
-    {
-        Task<Inventory> ExecuteAsync(Guid id);
-    }
+    Task<Inventory> ExecuteAsync(Guid id);
 }

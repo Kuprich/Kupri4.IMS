@@ -9,6 +9,7 @@
         <td>
             <a class="btn btn-outline-success" @onclick="() => NavigateToEditInventory(Inventory.Id)">Edit</a>
             <a class="btn btn-outline-danger" @onclick="() => DeleteInventory(Inventory.Id)">Delete</a>
+            <a class="btn btn-outline-primary" @onclick="() => PurchaseInventory(Inventory.Id)">Purchase</a>
         </td>
     </tr>
 }
@@ -23,9 +24,15 @@
     {
         NavigationManager.NavigateTo($"/edetinventory/{inventoryId}");
     }
+
     private void DeleteInventory(Guid inventoryId)
     {
 
+    }
+
+    private void PurchaseInventory(Guid inventoryId)
+    {
+        NavigationManager.NavigateTo($"/purchaseinventory/{inventoryId}");
     }
 
 }
