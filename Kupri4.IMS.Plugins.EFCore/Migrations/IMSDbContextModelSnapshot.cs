@@ -17,6 +17,43 @@ namespace Kupri4.IMS.Plugins.EFCore.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
 
+            modelBuilder.Entity("Kupri4.IMS.CoreBusiness.InvenoryTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ActivityType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DoneBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("InventoryId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("InventoryQuantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PurchaseOrder")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("QuantityAfter")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("QuantityBefore")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("TransactionDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InventoryId");
+
+                    b.ToTable("InvenoriesTransactions");
+                });
+
             modelBuilder.Entity("Kupri4.IMS.CoreBusiness.Inventory", b =>
                 {
                     b.Property<Guid>("Id")
@@ -55,6 +92,9 @@ namespace Kupri4.IMS.Plugins.EFCore.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.ToTable("Products");
@@ -84,6 +124,52 @@ namespace Kupri4.IMS.Plugins.EFCore.Migrations
                     b.ToTable("ProductInventories");
                 });
 
+            modelBuilder.Entity("Kupri4.IMS.CoreBusiness.ProductTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ActivityType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DoneBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ProductQuantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ProductionOrder")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("QuantityAfter")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("QuantityBefore")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("TransactionDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductTransactions");
+                });
+
+            modelBuilder.Entity("Kupri4.IMS.CoreBusiness.InvenoryTransaction", b =>
+                {
+                    b.HasOne("Kupri4.IMS.CoreBusiness.Inventory", "Inventory")
+                        .WithMany()
+                        .HasForeignKey("InventoryId");
+
+                    b.Navigation("Inventory");
+                });
+
             modelBuilder.Entity("Kupri4.IMS.CoreBusiness.ProductInventory", b =>
                 {
                     b.HasOne("Kupri4.IMS.CoreBusiness.Inventory", "Inventory")
@@ -99,6 +185,15 @@ namespace Kupri4.IMS.Plugins.EFCore.Migrations
                         .IsRequired();
 
                     b.Navigation("Inventory");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Kupri4.IMS.CoreBusiness.ProductTransaction", b =>
+                {
+                    b.HasOne("Kupri4.IMS.CoreBusiness.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
                 });

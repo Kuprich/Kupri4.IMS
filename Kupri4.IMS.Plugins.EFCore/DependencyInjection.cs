@@ -5,7 +5,7 @@ namespace Kupri4.IMS.Plugins.EFCore
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddImsDependendencies(this IServiceCollection services)
+        public static IServiceCollection AddEfCoreDependendencies(this IServiceCollection services)
         {
             services.AddDbContext<IMSDbContext>(opt =>
             {

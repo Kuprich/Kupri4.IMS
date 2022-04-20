@@ -7,9 +7,12 @@
         <td>@Product.Name</td>
         <td>@Product.Description</td>
         <td>@Product.Price.ToString("C2")</td>
+        <td>@Product.Quantity</td>
         <td>
             <a class="btn btn-outline-success" @onclick="() => NavigateToEditProduct(Product.Id)">Edit</a>
             <a class="btn btn-outline-danger" @onclick="() => DeleteProduct(Product.Id)">Delete</a>
+            <a class="btn btn-outline-primary" @onclick="() => ProduceProduct(Product.Id)">Produce</a>
+
         </td>
     </tr>
 }
@@ -33,6 +36,10 @@
     {
         await DeleteProductUseCase.ExecuteAsync(productId);
         await OnProductDeleted.InvokeAsync();
+    }
+    private void ProduceProduct(Guid productId)
+    {
+        NavigationManager.NavigateTo($"/produceproduct/{productId}");
     }
 
 }

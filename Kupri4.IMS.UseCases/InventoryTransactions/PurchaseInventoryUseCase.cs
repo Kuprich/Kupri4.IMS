@@ -1,8 +1,8 @@
 ﻿using Kupri4.IMS.CoreBusiness;
-using Kupri4.IMS.UseCases.Inventories.Interfaces;
+using Kupri4.IMS.UseCases.InventoryTransactions.Interfaces;
 using Kupri4.IMS.UseCases.PluginInterfaces;
 
-namespace Kupri4.IMS.UseCases.Inventories;
+namespace Kupri4.IMS.UseCases.InventoryTransactions;
 
 public class PurchaseInventoryUseCase : IPurchaseInventoryUseCase
 {

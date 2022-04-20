@@ -24,17 +24,16 @@ public class InventoryTransactRepository : IInventoryTransactRepository
                 Inventory = inventory,
                 InventoryQuantity = inventoryTransactionDto.InventoryQuantity,
                 QuantityBefore = inventory.Quantity,
-                InventoryTransactionType = InventoryTransactionType.PurchaseInventory,
+                ActivityType = InventoryTransactionType.PurchaseInventory,
                 QuantityAfter = inventory.Quantity + inventoryTransactionDto.InventoryQuantity,
                 TransactionDate = DateTime.Now,
-                // TODO: сохранять данные польвателя при выполнении транзакции
+                // TODO: сохранять данные пользователя при выполнении транзакции
                 DoneBy = "Test User"
             };
 
             _db.InvenoriesTransactions.Add(transaction);
            await _db.SaveChangesAsync();
-        }
 
-        
+        }
     }
 }

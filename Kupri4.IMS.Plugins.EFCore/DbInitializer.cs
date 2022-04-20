@@ -35,8 +35,8 @@ namespace Kupri4.IMS.Plugins.EFCore
         private static List<Product> GetSomeProducts() =>
             new()
             {
-                new Product() { Id = Guid.NewGuid(), Name = "Gas Car", Description = "Gas Car description", Price = 10000m },
-                new Product() { Id = Guid.NewGuid(), Name = "Electric Car", Description = "Product2 descr", Price = 20000m }
+                new Product() { Id = Guid.NewGuid(), Name = "Gas Car", Description = "Gas Car description", Price = 10000m, Quantity = 1 },
+                new Product() { Id = Guid.NewGuid(), Name = "Electric Car", Description = "Product2 descr", Price = 20000m, Quantity = 1 }
             };
 
         private static List<Inventory> GetSomeInventories() =>

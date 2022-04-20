@@ -2,7 +2,7 @@
 
 public class InventoryTransactionDto
 {
-    public string? PurchaseOrder { get; set; }
     public Guid InventoryId { get; set; }
+    public string? PurchaseOrder { get; set; }
     public int InventoryQuantity { get; set; }
 }

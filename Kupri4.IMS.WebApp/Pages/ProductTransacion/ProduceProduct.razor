@@ -1,0 +1,144 @@
+﻿@page "/produceproduct/{Id}"
+
+@inject NavigationManager NavigationManager
+
+@inject IViewProductByIdUseCase ViewProductByIdUseCase
+@inject IProduceProductUseCase ProduceProductUseCase
+@inject IValidateEnoughInventoriesForProducingUseCase ValidateEnoughInventoriesForProducingUseCase
+
+<h3>Produce @_produceProductViewModel.Product?.Name</h3>
+<hr />
+
+<div class="product_info">
+    <div class="row">
+        <div class="filed_title">
+            Name:
+        </div>
+        <div class="col-6">
+            @_produceProductViewModel?.Product?.Name
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="filed_title">
+            Description:
+        </div>
+        <div class="col-6">
+            @_produceProductViewModel?.Product?.Description
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="filed_title">
+            Price:
+        </div>
+        <div class="col-6">
+            @_produceProductViewModel?.Product?.Price.ToString("C2")
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<h4>
+    This product consists of the following parts:
+</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (_produceProductViewModel?.Product?.ProductInventories != null)
+        {
+            @foreach (var productInventory in @_produceProductViewModel.Product.ProductInventories)
+            {
+                <tr>
+                    <td>@productInventory.Inventory?.Name</td>
+                    <td>@productInventory.Inventory?.Price.ToString("C2")</td>
+                    <td>@productInventory.InventoryQuantity</td>
+                    <td>
+                        @{
+                            decimal total = productInventory.InventoryQuantity * productInventory.Inventory!.Price;
+                        }
+                        @total.ToString("C2");
+                    </td>
+                </tr>
+            }
+            <tr>
+                <th colspan="3">Total Cost</th>
+                <td colspan="3">@_totalCost.ToString("C2")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+
+<EditForm Model="_produceProductViewModel" OnValidSubmit="OnValidSubmit">
+    <FluentValidationValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label class="form-label" for="productionOrder">Production order</label>
+        <InputText class="form-control" id="productionOrder" @bind-Value="_produceProductViewModel!.ProductionOrder" />
+    </div>
+
+    <div class="form-group">
+        <label class="form-label" for="productQuantity">Production quantity</label>
+        <InputNumber class="form-control" id="productQuantity" @bind-Value="_produceProductViewModel!.ProductQuantity" />
+    </div>
+
+    <br />
+
+    <button class="btn btn-outline-primary" type="submit">Produce</button>
+
+</EditForm>
+
+
+
+<style>
+    .product_info
+    .filed_title {
+        max-width: 300px;
+        font-weight: bold;
+    }
+</style>
+
+
+@code {
+    [Parameter]
+    public string? Id { get; set; }
+
+    private ProduceProductViewModel _produceProductViewModel = new();
+
+    private decimal _totalCost => _produceProductViewModel!.Product!.ProductInventories.Sum(x => x.InventoryQuantity * x.Inventory!.Price);
+
+    protected override async Task OnInitializedAsync()
+    {
+        Guid productId = Guid.Parse(Id ?? "");
+        _produceProductViewModel!.Product = await ViewProductByIdUseCase.ExecuteAsync(productId);
+    }
+
+    private async Task OnValidSubmit()
+    {
+        if (await ValidateEnoughInventoriesForProducingUseCase.ExecuteAsync(_produceProductViewModel.Product.Id, _produceProductViewModel.ProductQuantity))
+        {
+            ProductTransactionDto productTransactionDto = new()
+                {
+                    ProductId = _produceProductViewModel!.Product!.Id,
+                    ProductionOrder = _produceProductViewModel.ProductionOrder,
+                    Quantity = _produceProductViewModel.ProductQuantity
+                };
+            ProduceProductUseCase.ExecuteAsync(productTransactionDto);
+
+            NavigationManager.NavigateTo("/products");
+        }
+    }
+
+}

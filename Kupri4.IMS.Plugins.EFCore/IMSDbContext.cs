@@ -18,6 +18,8 @@ namespace Kupri4.IMS.Plugins.EFCore
 
         public DbSet<InvenoryTransaction> InvenoriesTransactions => Set<InvenoryTransaction>();
 
+        public DbSet<ProductTransaction> ProductTransactions => Set<ProductTransaction>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
