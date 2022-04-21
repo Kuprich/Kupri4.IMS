@@ -6,6 +6,17 @@
 @inject IProduceProductUseCase ProduceProductUseCase
 @inject IValidateEnoughInventoriesForProducingUseCase ValidateEnoughInventoriesForProducingUseCase
 
+<style>
+    .product_info
+    .filed_title {
+        max-width: 300px;
+        font-weight: bold;
+    }
+</style>
+
+
+<ErrorMessageComponent @ref="_errorMessageComponent"/>
+
 <h3>Produce @_produceProductViewModel.Product?.Name</h3>
 <hr />
 
@@ -102,20 +113,13 @@
 
 
 
-<style>
-    .product_info
-    .filed_title {
-        max-width: 300px;
-        font-weight: bold;
-    }
-</style>
-
-
 @code {
     [Parameter]
     public string? Id { get; set; }
 
     private ProduceProductViewModel _produceProductViewModel = new();
+
+    private ErrorMessageComponent? _errorMessageComponent;
 
     private decimal _totalCost => _produceProductViewModel!.Product!.ProductInventories.Sum(x => x.InventoryQuantity * x.Inventory!.Price);
 
@@ -127,7 +131,7 @@
 
     private async Task OnValidSubmit()
     {
-        if (await ValidateEnoughInventoriesForProducingUseCase.ExecuteAsync(_produceProductViewModel.Product.Id, _produceProductViewModel.ProductQuantity))
+        if (await ValidateEnoughInventoriesForProducingUseCase.ExecuteAsync(_produceProductViewModel.Product!.Id, _produceProductViewModel.ProductQuantity))
         {
             ProductTransactionDto productTransactionDto = new()
                 {
@@ -135,9 +139,14 @@
                     ProductionOrder = _produceProductViewModel.ProductionOrder,
                     Quantity = _produceProductViewModel.ProductQuantity
                 };
-            ProduceProductUseCase.ExecuteAsync(productTransactionDto);
+            await ProduceProductUseCase.ExecuteAsync(productTransactionDto);
 
             NavigationManager.NavigateTo("/products");
+        }
+        else
+        {
+            _errorMessageComponent?.Show();
+
         }
     }
 

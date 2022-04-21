@@ -1,0 +1,48 @@
+﻿@using Microsoft.JSInterop
+
+@inject IJSRuntime JSRuntime
+
+<style>
+    #alertContainer {
+        transition: 0.5s;
+        position: relative;
+    }
+
+        #alertContainer .alert {
+            opacity: 0;
+            position: absolute;
+            right: 0;
+            top: -13px;
+        }
+</style>
+
+
+
+
+
+<div id="alertContainer">
+    <div class="alert alert-warning alert-dismissible" role="alert">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @onclick="Hide"></button>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public string Message { get; set; } = "Message";
+
+    public async Task Hide()
+    {
+        await JSRuntime.InvokeVoidAsync("fadeOut", "#alertContainer .alert");
+    }
+    public async Task Show()
+    {
+        await JSRuntime.InvokeVoidAsync("fadeIn", "#alertContainer .alert");
+        await JSRuntime.InvokeVoidAsync("fadeOutWithDelay", "#alertContainer .alert", 5000);   
+    }
+
+}
+
+
+
