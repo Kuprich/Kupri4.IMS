@@ -16,7 +16,7 @@
         {
             @foreach (var product in Products)
             {
-               <ProductItemComponent Product="product" OnProductDeleted="OnProductDeleted"/>
+               <ProductItemComponent Product="product" OnProductDeleted="OnProductDeleted" OnProducingProductErorr = "OnProducingProductErorr" />
             }
         }
         else
@@ -36,6 +36,9 @@
     public List<Product>? Products { get; set; }
 
     [Parameter]
-    public EventCallback OnProductDeleted{ get; set; }
+    public EventCallback OnProductDeleted { get; set; }
+
+    [Parameter]
+    public EventCallback OnProducingProductErorr { get; set; }
 
 }

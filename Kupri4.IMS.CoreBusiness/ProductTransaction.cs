@@ -5,7 +5,7 @@ public class ProductTransaction
     public Guid Id { get; set; }
     public Product? Product { get; set; }
     public int ProductQuantity { get; set; }
-    public string? ProductionOrder { get; set; }
+    public string? TransactionNumber { get; set; }
     public int QuantityBefore { get; set; }
     public ProductTransactionType? ActivityType { get; set; }
     public int QuantityAfter { get; set; }

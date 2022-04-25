@@ -3,18 +3,21 @@
 @inject NavigationManager NavigationManager
 @inject IViewProductsByNameUseCase ViewProductsByNameUseCase
 
+<ErrorMessageComponent @ref="_errorMessageComponent"/>
+
 <h3>Product List</h3>
 <br />
 
-<SearchProductsComponent OnSearchProducts="SearchProduct"/>
+<SearchProductsComponent OnSearchProducts="SearchProduct" />
 
 <button type="button" class="btn btn-link" @onclick="NavigateToAddProduct">Add new product</button>
 <br />
 
-<ProductListComponent Products = "_products" OnProductDeleted="UpdateProductList"/>
+<ProductListComponent Products="_products" OnProductDeleted="UpdateProductList" OnProducingProductErorr="ShowProducingError" />
 
 
 @code {
+    private ErrorMessageComponent? _errorMessageComponent;
 
     private List<Product>? _products;
 
@@ -32,5 +35,11 @@
     {
         _products = await ViewProductsByNameUseCase.ExecuteAsync(string.Empty);
     }
+
+    private void ShowProducingError()
+    {
+        _errorMessageComponent?.Show("Not enough parts to produce a product");
+    }
+
 
 }

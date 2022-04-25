@@ -12,24 +12,32 @@ public class ValidateEnoughInventoriesForProducingUseCase : IValidateEnoughInven
         _productRepository = productRepository;
     }
 
-    public async Task<bool> ExecuteAsync(Guid productId, int producingQuantity)
+    public async Task<int> ExecuteAsync(Guid productId)
     {
+        int producingQuantity = 0;
 
         var product = await _productRepository.GetProductByIdAsync(productId);
 
-        if (product != null)
+        if (product == null)
         {
-            foreach (var productInventory in product.ProductInventories)
+            return producingQuantity;
+        }
+
+        while (true)
+        {
+            foreach (var productInventory in product!.ProductInventories)
             {
                 if (productInventory.Inventory!.Quantity < productInventory.InventoryQuantity * producingQuantity)
                 {
-                    return false;
-                }
 
-                return true;
+                    return --producingQuantity;
+                }
             }
+
+            producingQuantity++;
+
         }
 
-        return false;
     }
+
 }

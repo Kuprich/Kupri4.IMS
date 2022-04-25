@@ -14,7 +14,7 @@ function fadeOut(el) {
 
 		document.querySelector(el).style.opacity = opacity;
 
-		opacity -= opacity * 0.1;
+		opacity -= 0.1;
 
 	}, 5);
 }
@@ -40,7 +40,7 @@ function fadeIn(el) {
 
 		document.querySelector(el).style.opacity = opacity;
 
-		opacity += opacity * 0.7;
+		opacity += 0.1;
 
 	}, 5);
 

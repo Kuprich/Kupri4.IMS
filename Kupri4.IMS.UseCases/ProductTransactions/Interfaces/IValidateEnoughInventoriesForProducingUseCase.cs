@@ -2,5 +2,5 @@
 
 public interface IValidateEnoughInventoriesForProducingUseCase
 {
-    Task<bool> ExecuteAsync(Guid productId, int producingQuantity);
+    Task<int> ExecuteAsync(Guid productId);
 }

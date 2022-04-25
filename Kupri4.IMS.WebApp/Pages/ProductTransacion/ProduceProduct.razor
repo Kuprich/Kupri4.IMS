@@ -20,74 +20,7 @@
 <h3>Produce @_produceProductViewModel.Product?.Name</h3>
 <hr />
 
-<div class="product_info">
-    <div class="row">
-        <div class="filed_title">
-            Name:
-        </div>
-        <div class="col-6">
-            @_produceProductViewModel?.Product?.Name
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="filed_title">
-            Description:
-        </div>
-        <div class="col-6">
-            @_produceProductViewModel?.Product?.Description
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="filed_title">
-            Price:
-        </div>
-        <div class="col-6">
-            @_produceProductViewModel?.Product?.Price.ToString("C2")
-        </div>
-    </div>
-</div>
-
-<hr />
-
-<h4>
-    This product consists of the following parts:
-</h4>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (_produceProductViewModel?.Product?.ProductInventories != null)
-        {
-            @foreach (var productInventory in @_produceProductViewModel.Product.ProductInventories)
-            {
-                <tr>
-                    <td>@productInventory.Inventory?.Name</td>
-                    <td>@productInventory.Inventory?.Price.ToString("C2")</td>
-                    <td>@productInventory.InventoryQuantity</td>
-                    <td>
-                        @{
-                            decimal total = productInventory.InventoryQuantity * productInventory.Inventory!.Price;
-                        }
-                        @total.ToString("C2");
-                    </td>
-                </tr>
-            }
-            <tr>
-                <th colspan="3">Total Cost</th>
-                <td colspan="3">@_totalCost.ToString("C2")</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<ProductItemInfoComponent Product="_produceProductViewModel.Product"/>
 
 <hr />
 
@@ -97,7 +30,7 @@
 
     <div class="form-group">
         <label class="form-label" for="productionOrder">Production order</label>
-        <InputText class="form-control" id="productionOrder" @bind-Value="_produceProductViewModel!.ProductionOrder" />
+        <InputText class="form-control" id="productionOrder" @bind-Value="_produceProductViewModel!.ProduceOrder" />
     </div>
 
     <div class="form-group">
@@ -121,8 +54,7 @@
 
     private ErrorMessageComponent? _errorMessageComponent;
 
-    private decimal _totalCost => _produceProductViewModel!.Product!.ProductInventories.Sum(x => x.InventoryQuantity * x.Inventory!.Price);
-
+    
     protected override async Task OnInitializedAsync()
     {
         Guid productId = Guid.Parse(Id ?? "");
@@ -131,12 +63,14 @@
 
     private async Task OnValidSubmit()
     {
-        if (await ValidateEnoughInventoriesForProducingUseCase.ExecuteAsync(_produceProductViewModel.Product!.Id, _produceProductViewModel.ProductQuantity))
+        int producingQuantity = await ValidateEnoughInventoriesForProducingUseCase.ExecuteAsync(_produceProductViewModel.Product!.Id);
+
+        if (producingQuantity >= _produceProductViewModel.ProductQuantity)
         {
             ProductTransactionDto productTransactionDto = new()
                 {
                     ProductId = _produceProductViewModel!.Product!.Id,
-                    ProductionOrder = _produceProductViewModel.ProductionOrder,
+                    ProductionOrder = _produceProductViewModel.ProduceOrder,
                     Quantity = _produceProductViewModel.ProductQuantity
                 };
             await ProduceProductUseCase.ExecuteAsync(productTransactionDto);
@@ -145,8 +79,10 @@
         }
         else
         {
-            _errorMessageComponent?.Show();
+            string message = $"{_produceProductViewModel.ProductQuantity} product(s) can't be produced." +
+                $"You can produce a maximum of {producingQuantity} products";
 
+            _errorMessageComponent?.Show(message);
         }
     }
 

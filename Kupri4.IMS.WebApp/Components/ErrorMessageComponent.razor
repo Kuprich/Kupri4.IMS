@@ -9,7 +9,7 @@
     }
 
         #alertContainer .alert {
-            opacity: 0;
+            display: none;
             position: absolute;
             right: 0;
             top: -13px;
@@ -17,29 +17,29 @@
 </style>
 
 
-
-
-
 <div id="alertContainer">
     <div class="alert alert-warning alert-dismissible" role="alert">
-        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        @_message
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @onclick="Hide"></button>
     </div>
 </div>
 
 
 @code {
-    [Parameter]
-    public string Message { get; set; } = "Message";
+    private string? _message;
+
 
     public async Task Hide()
     {
         await JSRuntime.InvokeVoidAsync("fadeOut", "#alertContainer .alert");
     }
-    public async Task Show()
+
+    public async Task Show(string message = "Message")
     {
+        _message = message;
+        StateHasChanged();
+
         await JSRuntime.InvokeVoidAsync("fadeIn", "#alertContainer .alert");
-        await JSRuntime.InvokeVoidAsync("fadeOutWithDelay", "#alertContainer .alert", 5000);   
     }
 
 }

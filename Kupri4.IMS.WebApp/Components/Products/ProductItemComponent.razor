@@ -1,5 +1,6 @@
 ﻿@inject NavigationManager NavigationManager
 @inject IDeleteProductUseCase DeleteProductUseCase
+@inject IValidateEnoughInventoriesForProducingUseCase ValidateEnoughInventoriesForProducingUseCase
 
 @if (Product != null)
 {
@@ -12,12 +13,11 @@
             <a class="btn btn-outline-success" @onclick="() => NavigateToEditProduct(Product.Id)">Edit</a>
             <a class="btn btn-outline-danger" @onclick="() => DeleteProduct(Product.Id)">Delete</a>
             <a class="btn btn-outline-primary" @onclick="() => ProduceProduct(Product.Id)">Produce</a>
+            <a class="btn btn-outline-primary" @onclick="() => SellProduct(Product.Id)">Sell</a>
 
         </td>
     </tr>
 }
-
-
 
 
 @code {
@@ -26,6 +26,9 @@
 
     [Parameter]
     public EventCallback OnProductDeleted { get; set; }
+
+    [Parameter]
+    public EventCallback OnProducingProductErorr { get; set; }
 
     private void NavigateToEditProduct(Guid productId)
     {
@@ -37,9 +40,24 @@
         await DeleteProductUseCase.ExecuteAsync(productId);
         await OnProductDeleted.InvokeAsync();
     }
-    private void ProduceProduct(Guid productId)
+
+    private async Task ProduceProduct(Guid productId)
     {
-        NavigationManager.NavigateTo($"/produceproduct/{productId}");
+        int producingQuantity = await ValidateEnoughInventoriesForProducingUseCase.ExecuteAsync(productId);
+
+        if (producingQuantity > 0)
+        {
+            NavigationManager.NavigateTo($"/produceproduct/{productId}");
+        }
+
+        else{
+            await OnProducingProductErorr.InvokeAsync();
+        }
+    }
+
+    private void SellProduct(Guid productId)
+    {
+         NavigationManager.NavigateTo($"/sellproduct/{productId}");
     }
 
 }

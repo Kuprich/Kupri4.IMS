@@ -142,9 +142,6 @@ namespace Kupri4.IMS.Plugins.EFCore.Migrations
                     b.Property<int>("ProductQuantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ProductionOrder")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("QuantityAfter")
                         .HasColumnType("INTEGER");
 
@@ -152,6 +149,9 @@ namespace Kupri4.IMS.Plugins.EFCore.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("TransactionDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TransactionNumber")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

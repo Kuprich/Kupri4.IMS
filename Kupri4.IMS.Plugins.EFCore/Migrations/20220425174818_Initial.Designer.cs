@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kupri4.IMS.Plugins.EFCore.Migrations
 {
     [DbContext(typeof(IMSDbContext))]
-    [Migration("20220419170924_Initial")]
+    [Migration("20220425174818_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -144,9 +144,6 @@ namespace Kupri4.IMS.Plugins.EFCore.Migrations
                     b.Property<int>("ProductQuantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ProductionOrder")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("QuantityAfter")
                         .HasColumnType("INTEGER");
 
@@ -154,6 +151,9 @@ namespace Kupri4.IMS.Plugins.EFCore.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("TransactionDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TransactionNumber")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

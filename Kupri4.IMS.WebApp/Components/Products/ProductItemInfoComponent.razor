@@ -1,0 +1,77 @@
+﻿<div class="product_info">
+    <div class="row">
+        <div class="filed_title">
+            Name:
+        </div>
+        <div class="col-6">
+            @Product?.Name
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="filed_title">
+            Description:
+        </div>
+        <div class="col-6">
+            @Product?.Description
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="filed_title">
+            Price:
+        </div>
+        <div class="col-6">
+            @Product?.Price.ToString("C2")
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<h4>
+    This product consists of the following parts:
+</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Product?.ProductInventories != null)
+        {
+            @foreach (var productInventory in Product.ProductInventories)
+            {
+                <tr>
+                    <td>@productInventory.Inventory?.Name</td>
+                    <td>@productInventory.Inventory?.Price.ToString("C2")</td>
+                    <td>@productInventory.InventoryQuantity</td>
+                    <td>
+                        @{
+                            decimal total = productInventory.InventoryQuantity * productInventory.Inventory!.Price;
+                        }
+                        @total.ToString("C2");
+                    </td>
+                </tr>
+            }
+            <tr>
+                <th colspan="3">Total Cost</th>
+                <td colspan="3">@_totalCost.ToString("C2")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+
+    [Parameter]
+    public Product? Product { get; set; }
+
+    private decimal _totalCost => Product!.ProductInventories.Sum(x => x.InventoryQuantity * x.Inventory!.Price);
+
+}

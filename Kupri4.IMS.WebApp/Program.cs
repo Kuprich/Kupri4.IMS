@@ -56,6 +56,7 @@ builder.Services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
 // --ProductTransactions
 builder.Services.AddTransient<IProduceProductUseCase, ProduceProductUseCase>();
 builder.Services.AddTransient<IValidateEnoughInventoriesForProducingUseCase, ValidateEnoughInventoriesForProducingUseCase>();
+builder.Services.AddTransient<ISellProductUseCase, SellProductUseCase>();
 
 
 var app = builder.Build();

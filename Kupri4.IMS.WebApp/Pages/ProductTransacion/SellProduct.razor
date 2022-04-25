@@ -1,0 +1,78 @@
+﻿@page "/sellproduct/{Id}"
+
+@inject NavigationManager NavigationManager
+
+@inject IViewProductByIdUseCase ViewProductByIdUseCase
+@inject ISellProductUseCase SellProductUseCase
+
+<style>
+    .product_info
+    .filed_title {
+        max-width: 300px;
+        font-weight: bold;
+    }
+</style>
+
+
+<ErrorMessageComponent @ref="_errorMessageComponent" />
+
+<h3>Sell @_sellProductViewModel.Product?.Name</h3>
+<hr />
+
+<ProductItemInfoComponent Product="_sellProductViewModel.Product" />
+
+<hr />
+
+<EditForm Model="_sellProductViewModel" OnValidSubmit="OnValidSubmit">
+    <FluentValidationValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label class="form-label" for="productionOrder">Sell order</label>
+        <InputText class="form-control" id="productionOrder" @bind-Value="_sellProductViewModel!.SellOrder" />
+    </div>
+
+    <div class="form-group">
+        <label class="form-label" for="productQuantity">Production quantity</label>
+        <InputNumber class="form-control" id="productQuantity" @bind-Value="_sellProductViewModel!.ProductQuantity" 
+            min="1" max="@_sellProductViewModel!.Product!.Quantity"/>
+    </div>
+
+    <br />
+
+    <button class="btn btn-outline-primary" type="submit">Sell</button>
+
+</EditForm>
+
+
+
+@code {
+    [Parameter]
+    public string? Id { get; set; }
+
+    private SellProductViewModel _sellProductViewModel = new();
+
+    private ErrorMessageComponent? _errorMessageComponent;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Guid productId = Guid.Parse(Id ?? "");
+        _sellProductViewModel!.Product = await ViewProductByIdUseCase.ExecuteAsync(productId);
+    }
+
+    private async Task OnValidSubmit()
+    {
+
+        ProductTransactionDto productTransactionDto = new()
+            {
+                ProductId = _sellProductViewModel!.Product!.Id,
+                ProductionOrder = _sellProductViewModel.SellOrder,
+                Quantity = _sellProductViewModel.ProductQuantity
+            };
+
+        await SellProductUseCase.ExecuteAsync(productTransactionDto);
+
+        NavigationManager.NavigateTo("/products");
+    }
+
+}

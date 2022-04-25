@@ -95,7 +95,7 @@ namespace Kupri4.IMS.Plugins.EFCore.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     ProductId = table.Column<Guid>(type: "TEXT", nullable: true),
                     ProductQuantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    ProductionOrder = table.Column<string>(type: "TEXT", nullable: true),
+                    TransactionNumber = table.Column<string>(type: "TEXT", nullable: true),
                     QuantityBefore = table.Column<int>(type: "INTEGER", nullable: false),
                     ActivityType = table.Column<int>(type: "INTEGER", nullable: true),
                     QuantityAfter = table.Column<int>(type: "INTEGER", nullable: false),

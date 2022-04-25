@@ -2,11 +2,11 @@
 
 namespace Kupri4.IMS.WebApp.ViewModels;
 
-public class ProduceProductViewModel
+public class SellProductViewModel
 {
     public Product? Product { get; set; }
     public int ProductQuantity { get; set; } = 1;
-    public string? ProduceOrder { get; set; }
+    public string? SellOrder { get; set; }
 }
 
 
