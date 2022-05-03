@@ -45,6 +45,7 @@ builder.Services.AddTransient<IEditInventoryUseCase, EditInventoryUseCase>();
 
 // --InventoryTransactions
 builder.Services.AddTransient<IPurchaseInventoryUseCase, PurchaseInventoryUseCase>();
+builder.Services.AddTransient<ISearchInventoryTransactionsUseCase, SearchInventoryTransactionsUseCase>();
 
 // --products
 builder.Services.AddTransient<IViewProductsByNameUseCase, ViewProductsByNameUseCase>();

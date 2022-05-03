@@ -16,7 +16,7 @@ namespace Kupri4.IMS.Plugins.EFCore
 
         public DbSet<ProductInventory> ProductInventories => Set<ProductInventory>();
 
-        public DbSet<InvenoryTransaction> InvenoriesTransactions => Set<InvenoryTransaction>();
+        public DbSet<InventoryTransaction> InventoryTransactions => Set<InventoryTransaction>();
 
         public DbSet<ProductTransaction> ProductTransactions => Set<ProductTransaction>();
 

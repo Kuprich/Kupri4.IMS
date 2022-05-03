@@ -1,0 +1,40 @@
+﻿@page "/inventorytransactions"
+
+<h3>Inventory Transactions</h3>
+
+<SearhInventoryTransactionComponent OnSearchInvenotoryTransactions="OnSearchInvenotoryTransactions" />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Transaction Order</th>
+            <th>Inventory Name</th>
+            <th>Transaction Type</th>
+            <th>Transaction Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (_inventoryTransactions != null)
+        {
+            @foreach (var inventoryTransaction in _inventoryTransactions)
+            {
+                <tr>
+                    <td>@inventoryTransaction.TransactionOrder</td>
+                    <td>@inventoryTransaction.Inventory?.Name</td>
+                    <td>@inventoryTransaction.TransactionType</td>
+                    <td>@inventoryTransaction.TransactionDate?.ToString("dd.MM.yyyy")</td>
+                </tr>
+            }
+        }
+    </tbody>
+
+</table>
+
+@code {
+    private List<InventoryTransaction>? _inventoryTransactions;
+
+    private void OnSearchInvenotoryTransactions(List<InventoryTransaction> inventoryTransactions)
+    {
+        _inventoryTransactions = inventoryTransactions;
+    }
+}

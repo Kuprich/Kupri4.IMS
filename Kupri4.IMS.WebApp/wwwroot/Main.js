@@ -1,5 +1,5 @@
 ﻿
-function fadeOut(el) {
+function fadeOut(selectors) {
 
 	var opacity = 1;
 
@@ -8,27 +8,27 @@ function fadeOut(el) {
 		if (opacity <= 0.1) {
 
 			clearInterval(timer);
-			document.querySelector(el).style.display = "none";
+			document.querySelector(selectors).style.display = "none";
 
 		}
 
-		document.querySelector(el).style.opacity = opacity;
+		document.querySelector(selectors).style.opacity = opacity;
 
 		opacity -= 0.1;
 
 	}, 5);
 }
 
-function fadeOutWithDelay(el, ms) {
-	setTimeout(() => fadeOut(el), ms);
+function fadeOutWithDelay(selectors, ms) {
+	setTimeout(() => fadeOut(selectors), ms);
 }
 
 
-function fadeIn(el) {
+function fadeIn(selectors) {
 
 	var opacity = 0.01;
 
-	document.querySelector(el).style.display = "block";
+	document.querySelector(selectors).style.display = "block";
 
 	var timer = setInterval(function () {
 
@@ -38,12 +38,11 @@ function fadeIn(el) {
 
 		}
 
-		document.querySelector(el).style.opacity = opacity;
+		document.querySelector(selectors).style.opacity = opacity;
 
 		opacity += 0.1;
 
 	}, 5);
-
 }
 
 

@@ -3,5 +3,5 @@
 public enum ProductTransactionType
 {
     ProduceProduct = 1,
-    SellProduct = 2,
+    SellProduct = 2
 }

@@ -1,0 +1,98 @@
+﻿@inject IJSRuntime JS
+
+@inject ISearchInventoryTransactionsUseCase SearchInventoryTransactionsUseCase
+
+<EditForm Model="_searchInventoryTransactionViewModel">
+
+    <ValidationMessage For="() => _searchInventoryTransactionViewModel.DateFrom" />
+    <ValidationMessage For="() => _searchInventoryTransactionViewModel.DateTo" />
+
+    <div class="row">
+        <div class="form-group col-lg-3 col-md-6">
+            <label class="form-label" for="name">Inventory name</label>
+            <InputText class="form-control" id="name" @bind-Value="_searchInventoryTransactionViewModel.InventoryName" />
+        </div>
+
+        <div class="form-group col-lg-3 col-md-6">
+            <label class="form-label" for="dateFrom">Date from</label>
+
+            <InputDate class="form-control" id="dateFrom" DisplayName="Date from" @bind-Value="_searchInventoryTransactionViewModel.DateFrom" />
+        </div>
+
+        <div class="form-group col-lg-3 col-md-6">
+            <label class="form-label" for="dateTo">Date to</label>
+
+            <InputDate class="form-control" id="dateTo" DisplayName="Date to" @bind-Value="_searchInventoryTransactionViewModel.DateTo" />
+        </div>
+
+        <div class="form-group col-lg-3 col-md-6">
+            <label class="form-label" for="transactionType">Transaction Type</label>
+            <InputSelect class="form-control valid" @bind-Value="_searchInventoryTransactionViewModel.TransactionType">
+
+                <option selected value="">Select transaction type: </option>
+
+                @foreach (var transactionType in Enum.GetValues(typeof(InventoryTransactionType)))
+                {
+                    string? displayName = ((InventoryTransactionType)transactionType).GetDisplayName();
+
+                    <option value="@transactionType">
+                        @displayName
+                    </option>
+
+                }
+            </InputSelect>
+        </div>
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-outline-primary" @onclick="SearchInventoryTransactions">Search</button>
+    <button type="submit" class="btn btn-outline-secondary" @onclick="ClearSearchInventoryTransactionForm">Clear</button>
+
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public EventCallback<List<InventoryTransaction>> OnSearchInvenotoryTransactions { get; set; }
+
+    private List<InventoryTransaction>? _inventoryTransactions;
+
+    private SearchInventoryTransactionViewModel _searchInventoryTransactionViewModel = new();
+
+
+
+    private async Task SearchInventoryTransactions()
+    {
+
+        SearchInventoryTransactionDto searchInventoryTransactionDto = new()
+            {
+                InventoryName = _searchInventoryTransactionViewModel.InventoryName,
+                DateFrom = _searchInventoryTransactionViewModel.DateFrom,
+                DateTo = _searchInventoryTransactionViewModel.DateTo,
+                TransactionType = _searchInventoryTransactionViewModel.TransactionType
+            };
+
+        _inventoryTransactions = (await SearchInventoryTransactionsUseCase.ExecuteAsync(searchInventoryTransactionDto)).ToList();
+
+        await OnSearchInvenotoryTransactions.InvokeAsync(_inventoryTransactions);
+    }
+
+    private async Task ClearSearchInventoryTransactionForm()
+    {
+        _searchInventoryTransactionViewModel = new();
+
+        _inventoryTransactions = (await SearchInventoryTransactionsUseCase.ExecuteAsync(new SearchInventoryTransactionDto())).ToList();
+        await SearchInventoryTransactions();
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _inventoryTransactions = (await SearchInventoryTransactionsUseCase.ExecuteAsync(new SearchInventoryTransactionDto())).ToList();
+        await SearchInventoryTransactions();
+    }
+
+
+
+}

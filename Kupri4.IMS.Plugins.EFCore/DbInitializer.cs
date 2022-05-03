@@ -7,6 +7,8 @@ namespace Kupri4.IMS.Plugins.EFCore
         private static List<Inventory> _inventories = GetSomeInventories();
         private static List<Product> _products = GetSomeProducts();
         private static List<ProductInventory> _productInventories = GetSomeProductInventories();
+        private static List<InventoryTransaction> _inventoryTransactions = GetSomeInventoryTransactions();
+
 
         public async static void Initialize(IMSDbContext dbContext)
         {
@@ -16,9 +18,49 @@ namespace Kupri4.IMS.Plugins.EFCore
             await dbContext.Products.AddRangeAsync(_products);
             await dbContext.Inventories.AddRangeAsync(_inventories);
             await dbContext.ProductInventories.AddRangeAsync(_productInventories);
+            await dbContext.InventoryTransactions.AddRangeAsync(_inventoryTransactions);
 
             await dbContext.SaveChangesAsync();
         }
+        private static List<InventoryTransaction> GetSomeInventoryTransactions() =>
+            new()
+            {
+                new InventoryTransaction
+                {
+                    Inventory = _inventories[2],
+                    InventoryQuantity = 2,
+                    QuantityBefore = 6,
+                    QuantityAfter = 8,
+                    TransactionDate = DateTime.Now.AddDays(-3),
+                    TransactionOrder = "transaction order 1",
+                    TransactionType = InventoryTransactionType.PurchaseInventory,
+                    DoneBy = "Peter"
+                },
+
+                new InventoryTransaction
+                {
+                    Inventory = _inventories[4],
+                    InventoryQuantity = 4,
+                    QuantityBefore = 6,
+                    QuantityAfter = 2,
+                    TransactionDate = DateTime.Now.AddDays(-2),
+                    TransactionOrder = "transaction order 2",
+                    TransactionType = InventoryTransactionType.PurchaseInventory,
+                    DoneBy = "Kolya"
+                },
+
+                new InventoryTransaction
+                {
+                    Inventory = _inventories[1],
+                    InventoryQuantity = 1,
+                    QuantityBefore = 2,
+                    QuantityAfter = 1,
+                    TransactionDate = DateTime.Now.AddDays(-1),
+                    TransactionOrder = "transaction order 3",
+                    TransactionType = InventoryTransactionType.ProduceProduct,
+                    DoneBy = "Kolya"
+                },
+            };
 
         private static List<ProductInventory> GetSomeProductInventories() =>
             new()
